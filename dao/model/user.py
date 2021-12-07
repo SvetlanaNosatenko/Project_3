@@ -9,7 +9,8 @@ class User(db.Model):
     surname = db.Column(db.String)
     password = db.Column(db.String)
     email = db.Column(db.String)
-
+    favorite_genre = db.Column(db.Integer, db.ForeignKey("genre.id"))
+    genre = db.relationship("Genre")
 
 class UserSchema(Schema):
     id = fields.Int()
@@ -17,3 +18,5 @@ class UserSchema(Schema):
     surname = fields.Str()
     password = fields.Str()
     email = fields.Str()
+
+
