@@ -12,6 +12,7 @@ class User(db.Model):
     favorite_genre = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
+
 class UserSchema(Schema):
     id = fields.Int()
     name = fields.Str()
