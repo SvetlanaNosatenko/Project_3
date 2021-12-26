@@ -9,6 +9,11 @@ movie_ns = Namespace('movies')
 
 @movie_ns.route('/')
 class MoviesView(Resource):
+    """Для тех эндпоинтов, которые возвращают несколько записей, организовать пагинацию через URL-параметр page
+    (возвращать на страницу по 12 элементов).
+    Для эндпонта GET /movies/ добавить необязательный параметр state.
+    Если он присутствует и имеет значение new — возвращаем записи в отсортированном виде (самые свежие),
+    иначе возвращаем в том порядке, в котором они лежат в базе."""
     def get(self):
         page = int(request.args.get("page", 1))
         state = request.args.get('state')
@@ -27,6 +32,7 @@ class MovieView(Resource):
 
 @movie_ns.route('/genres/<int:bid>')
 class MovesGenreView(Resource):
+    """Получение списка фильмом по определенному жанру"""
     def get(self, bid):
         movie = movie_service.get_genre(bid)
         return MovieSchema().dump(movie)
@@ -34,6 +40,7 @@ class MovesGenreView(Resource):
 
 @movie_ns.route('/directors/<int:bid>')
 class MovesDirectorView(Resource):
+    """Получение списка фильмом по определенному режиссеру"""
     def get(self, bid):
         movie = movie_service.get_director(bid)
         return MovieSchema().dump(movie)

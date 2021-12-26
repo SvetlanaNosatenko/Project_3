@@ -16,9 +16,3 @@ class GenresView(Resource):
         return GenreSchema(many=True).dump(genres), 200
 
 
-@genre_ns.route('/<int:bid>')
-class GenreView(Resource):
-    def get(self, bid):
-        genre = movie_service.get_genre(bid)
-        return MovieSchema().dump(genre), 200
-

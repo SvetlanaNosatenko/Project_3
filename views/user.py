@@ -14,6 +14,7 @@ class UserView(Resource):
         user = user_service.get_one(bid)
         return UserSchema().dump(user), 200
 
+    @auth_required
     def patch(self, bid):
         """Изменить информацию пользователя (имя, фамилия, любимый жанр)"""
         req_json = request.json

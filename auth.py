@@ -1,6 +1,5 @@
 import calendar
 import datetime
-import hashlib
 
 from flask_restx import Resource, Namespace
 from flask import abort, request
@@ -31,6 +30,7 @@ def auth_required(func):
 
 @auth_ns.route('/register')
 class UsersView(Resource):
+    """Регистрация нового пользователя"""
     def post(self):
         req_json = request.json
         user_service.create(req_json)
@@ -39,6 +39,7 @@ class UsersView(Resource):
 
 @auth_ns.route('/login')
 class AuthView(Resource):
+    """Аутентификация пользователя"""
     def post(self):
         req_json = request.json
         email = req_json.get('email')

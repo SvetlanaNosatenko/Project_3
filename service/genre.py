@@ -1,5 +1,4 @@
 from dao.genre import GenreDAO
-from dao.movie import MovieDAO
 
 
 class GenreService:

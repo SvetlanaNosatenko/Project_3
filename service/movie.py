@@ -16,10 +16,10 @@ class MovieService:
 
     def get_all(self, dict_movie):
 
-        if dict_movie.get("state") and dict_movie.get("state") == "new":
+        if dict_movie.get("state") is not None and dict_movie.get("state") == "new":
             result = self.movie_dao.get_state()
 
-        elif dict_movie.get("page"):
+        elif dict_movie.get("page") is not None:
             result = self.movie_dao.get_page(dict_movie.get("page"))
 
         else:

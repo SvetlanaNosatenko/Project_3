@@ -22,3 +22,5 @@ class FavoriteDAO:
         self.session.delete(favorite)
         self.session.commit()
 
+
+

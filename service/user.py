@@ -28,8 +28,8 @@ class UserService:
         if "surname" in user_d:
             user.surname = user_d.get("surname")
         if "password_1" and "password_2" in user_d:
-            com = self.compare_passwords(password_hash=user.password, password=user_d.get('password_1'))
-            if com:
+            compare = self.compare_passwords(password_hash=user.password, password=user_d.get('password_1'))
+            if compare:
                 user.password = self.get_hash(user_d.get('password_2'))
         if "email" in user_d:
             user.email = user_d.get("email")

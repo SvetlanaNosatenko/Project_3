@@ -1,7 +1,4 @@
-from flask import request
-
 from dao.model.director import Director
-from dao.model.movie import Movie
 
 
 class DirectorDAO:
