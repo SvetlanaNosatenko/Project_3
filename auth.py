@@ -47,20 +47,18 @@ class AuthView(Resource):
         if None in [email, password]:
             abort(400)
 
-        user = db.session.query(User).filter(User.email == email).all()
+        user = db.session.query(User).filter(User.email == email).first()
 
         if user is None:
             return {"error": "Неверные учётные данные"}, 401
 
-        # password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
-        password_hash = hashlib.pbkdf2_hmac(algo, password.encode(), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
+        compare = user_service.compare_passwords(password_hash=user.password, password=password)
 
-        if password_hash != user.password:
+        if not compare:
             return {"error": "Неверные учётные данные"}, 401
 
         data = {
-            "email": email.get('email'),
-            "password": password.get('password')
+            "email": user.email
         }
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         data["exp"] = calendar.timegm(min30.timetuple())
@@ -82,9 +80,7 @@ class AuthView(Resource):
         email = data.get("email")
         user = db.session.query(User).filter(User.email == email).first()
 
-        data = {"email": user.email,
-                "password": user.password
-                }
+        data = {"email": user.email}
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         data["exp"] = calendar.timegm(min30.timetuple())
         access_token = jwt.encode(data, secret, algorithm=algo)

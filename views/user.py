@@ -25,6 +25,7 @@ class UserView(Resource):
 @user_ns.route('/password/<int:uid>')
 class UserView(Resource):
     """Обновить пароль пользователя, для этого нужно отправить два пароля password_1 и password_2."""
+    @auth_required
     def put(self, uid):
         req_json = request.json
         req_json["id"] = uid

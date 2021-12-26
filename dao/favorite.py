@@ -18,7 +18,7 @@ class FavoriteDAO:
         return ent
 
     def delete(self, mid):
-        favorite = self.session.query(Favorite).filter(Favorite.movie_id == mid).all()
+        favorite = self.session.query(Favorite).get(mid)
         self.session.delete(favorite)
         self.session.commit()
 

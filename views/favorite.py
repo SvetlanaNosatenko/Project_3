@@ -16,15 +16,22 @@ class FavoritesView(Resource):
         res = FavoriteSchema(many=True).dump(all_favorite)
         return res, 200
 
-    def post(self):
+
+@favorite_ns.route('/movies/<int:mid>')
+class FavoriteView(Resource):
+    @auth_required
+    def delete(self, mid):
         req_json = request.json
+        req_json["movie_id"] = mid
+        favorite_service.delete(mid)
+        return "", 204
+
+
+    @auth_required
+    def post(self, mid):
+        req_json = request.json
+        req_json["movie_id"] = mid
         favorite_service.create(req_json)
         return "", 201
 
-
-@favorite_ns.route('/movies/<int:movie_id>')
-class FavoriteView(Resource):
-    def delete(self, mid):
-        favorite_service.delete(mid)
-        return "", 204
 

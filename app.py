@@ -1,6 +1,5 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restx import Api
-
 from auth import auth_ns
 from config import Config
 from setup_db import db
@@ -14,12 +13,14 @@ from views.user import user_ns
 def create_app(config_object):
     app = Flask(__name__)
     app.config.from_object(config_object)
-    return app
 
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-def register_extensions(app):
     db.init_app(app=app)
-    api = Api(app)
+    api = Api(title="Flask Course Project 3", doc="/docs")
+    api.init_app(app)
     api.add_namespace(user_ns)
     api.add_namespace(movie_ns)
     api.add_namespace(director_ns)
@@ -27,12 +28,13 @@ def register_extensions(app):
     api.add_namespace(favorite_ns)
     api.add_namespace(auth_ns)
 
+    return app
+
 
 app = create_app(Config())
-register_extensions(app=app)
+# register_extensions(app=app)
 
 app.debug = True
-
 
 if __name__ == '__main__':
     app.run(debug=True)

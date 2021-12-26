@@ -1,7 +1,9 @@
+from flask import request
 from flask_restx import Resource, Namespace
 
 from dao.model.genre import GenreSchema
-from implemented import genre_service
+from dao.model.movie import MovieSchema
+from implemented import genre_service, movie_service
 
 genre_ns = Namespace('genres')
 
@@ -9,12 +11,14 @@ genre_ns = Namespace('genres')
 @genre_ns.route('/')
 class GenresView(Resource):
     def get(self):
-        genres = genre_service.get_all()
+        page = int(request.args.get("page", 1))
+        genres = genre_service.get_all(page)
         return GenreSchema(many=True).dump(genres), 200
 
 
 @genre_ns.route('/<int:bid>')
 class GenreView(Resource):
     def get(self, bid):
-        genre = genre_service.get_one(bid)
-        return GenreSchema().dump(genre), 200
+        genre = movie_service.get_genre(bid)
+        return MovieSchema().dump(genre), 200
+

@@ -15,13 +15,7 @@ class UserDAO:
         return self.session.query(User).get(bid)
 
     def update(self, user_d):
-        user = self.get_one(user_d.get('id'))
-        user.name = user_d.get("name")
-        user.surname = user_d.get("surname")
-        user.password = user_d.get("password")
-        user.email = user_d.get("email")
-        user.favorite_genre = user_d.get("favorite_genre")
-        self.session.add(user)
+        self.session.add(user_d)
         self.session.commit()
 
 
