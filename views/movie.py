@@ -35,7 +35,7 @@ class MovesGenreView(Resource):
     """Получение списка фильмом по определенному жанру"""
     def get(self, bid):
         movie = movie_service.get_genre(bid)
-        return MovieSchema().dump(movie)
+        return MovieSchema(many=True).dump(movie)
 
 
 @movie_ns.route('/directors/<int:bid>')
@@ -43,5 +43,5 @@ class MovesDirectorView(Resource):
     """Получение списка фильмом по определенному режиссеру"""
     def get(self, bid):
         movie = movie_service.get_director(bid)
-        return MovieSchema().dump(movie)
+        return MovieSchema(many=True).dump(movie)
 

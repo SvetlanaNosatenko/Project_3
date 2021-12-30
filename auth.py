@@ -12,25 +12,36 @@ from setup_db import db
 auth_ns = Namespace('auth')
 
 
+def auth_check():
+    if "Authorization" not in request.headers:
+        abort(401)
+    data = request.headers['Authorization']
+    token = data.split("Bearer ")[-1]
+    return jwt_decode(token)
+
+
+def jwt_decode(token):
+    try:
+        decoded_jwt = jwt.decode(token, secret, algorithms=algo)
+    except Exception as e:
+        print("JWT Decode Exception", e)
+        abort(401)
+    else:
+        return decoded_jwt
+
+
 def auth_required(func):
     def wrapper(*args, **kwargs):
-        if "Authorization" not in request.headers:
-            abort(401)
-        data = request.headers['Authorization']
-        token = data.split("Bearer ")[-1]
-        try:
-            jwt.decode(token, secret, algorithms=algo)
-        except Exception as e:
-            print("JWT Decode Exception", e)
-            abort(401)
-        return func(*args, **kwargs)
-
+        if auth_check():
+            return func(*args, **kwargs)
+        abort(401, "Authorization Error")
     return wrapper
 
 
 @auth_ns.route('/register')
 class UsersView(Resource):
     """Регистрация нового пользователя"""
+
     def post(self):
         req_json = request.json
         user_service.create(req_json)
@@ -40,6 +51,7 @@ class UsersView(Resource):
 @auth_ns.route('/login')
 class AuthView(Resource):
     """Аутентификация пользователя"""
+
     def post(self):
         req_json = request.json
         email = req_json.get('email')

@@ -5,7 +5,7 @@ from dao.model.director import Director
 from service.director import DirectorService
 
 
-@pytest.fixture()
+@pytest.fixture
 def director_dao():
     director_dao = DirectorDAO(None)
 
@@ -18,11 +18,18 @@ def director_dao():
     return director_dao
 
 
+@pytest.fixture
+def page():
+    page = 3
+    return page
+
+
 class TestDirectorService:
     @pytest.fixture(autouse=True)
     def director_service(self, director_dao):
         self.director_service = DirectorService(dao=director_dao)
 
-    def test_get_all(self):
-        directors = self.director_service.get_all()
+    @pytest.fixture
+    def test_get_all(self, page):
+        directors = self.director_service.get_all(page=page)
         assert len(directors) > 0
