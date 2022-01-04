@@ -10,6 +10,10 @@ class UserService:
     def __init__(self, dao: UserDAO):
         self.dao = dao
 
+    def get_id(self, email):
+        user_id = self.dao.get_id(email)
+        return user_id
+
     def create(self, user_d):
         user_d["password"] = self.get_hash(user_d.get('password'))
         return self.dao.create(user_d)

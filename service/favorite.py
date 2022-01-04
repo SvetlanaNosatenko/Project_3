@@ -11,8 +11,8 @@ class FavoriteService:
     def create(self, data):
         return self.dao.create(data)
 
-    def delete(self, user_id, movie_id):
-        self.dao.delete(user_id, movie_id)
+    def delete(self, user_id, mid):
+        self.dao.delete(user_id, mid)
 
 
 

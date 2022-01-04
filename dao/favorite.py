@@ -16,8 +16,8 @@ class FavoriteDAO:
         self.session.commit()
         return ent
 
-    def delete(self, user_id, movie_id):
-        favorite_id = self.session.query(Favorite).filter(Favorite.movie_id == movie_id, Favorite.user_id == user_id)
+    def delete(self, user_id, mid):
+        favorite_id = self.session.query(Favorite).filter(Favorite.movie_id == mid, Favorite.user_id == user_id).first()
         self.session.delete(favorite_id)
         self.session.commit()
 

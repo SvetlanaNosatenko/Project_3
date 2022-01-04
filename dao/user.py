@@ -18,5 +18,6 @@ class UserDAO:
         self.session.add(user_d)
         self.session.commit()
 
-
-
+    def get_id(self, email):
+        user = self.session.query(User).filter(User.email == email).first()
+        return user.id
